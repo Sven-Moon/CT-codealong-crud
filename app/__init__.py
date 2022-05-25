@@ -13,6 +13,7 @@ from .auth.routes import auth
 # imports for database stuff and login system
 from .models import db, login
 from flask_migrate import Migrate
+from .api.routes import api
 
 # define/instantiate our Flask app... aka create the actual object that will be our Flask app
 app = Flask(__name__)
@@ -24,6 +25,7 @@ app.config.from_object(Config)
 # create the link of communication between blueprints and app
 # aka register our blueprints
 app.register_blueprint(auth)
+app.register_blueprint(api)
 
 # set up ORM and Migrate communication with app and eachother
 db.init_app(app) # if this isnt here, our app and our database don't know how to talk to eachother (for queries, adding data, etc.)
