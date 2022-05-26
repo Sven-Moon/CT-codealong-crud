@@ -1,6 +1,7 @@
 
 from flask import Blueprint, jsonify, request as r
 from app.models import Animal, db
+from .services import token_required
 
 api = Blueprint('api', __name__, url_prefix='/api')
 
@@ -16,6 +17,7 @@ def get_animals():
     return jsonify({a.species: a.to_dict() for a in Animal.query.all()}), 200
 
 @api.route('/create', methods=['Post'])
+@token_required
 def create_animal():
     try:
         newdict = r.get_json()
@@ -38,6 +40,7 @@ def get_animal(species):
     return jsonify({'error': f'no such animal exits: {species}'}), 404
 
 @api.route('/update/<string:id>', methods=['POST'])
+@token_required
 def update_animal(id):
     
     # possible errors: id wrong, data shape wrong
@@ -51,6 +54,7 @@ def update_animal(id):
         return jsonify({'error':'Invalid request or animal ID doesn\'t exist'})
     
 @api.route('/delete/<string:id>', methods=['DELETE'])
+@token_required
 def delete_animal(id):
     animal = Animal.query.get(id)
     if not animal:
