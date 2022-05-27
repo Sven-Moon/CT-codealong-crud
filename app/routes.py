@@ -18,6 +18,8 @@ from flask import render_template, flash
 
 # import other packages we need
 import requests as r
+
+from app.models import Post, User
 from .services import getF1Drivers
 from flask_login import login_required
 
@@ -49,4 +51,11 @@ def f1Drivers():
     context = getF1Drivers() # sets the value of the context variable to a dictionary - the return value of the getF1Drivers function
     return render_template('f1.html', **context)
 
-
+@app.route('/blog/<string:username>', methods=['GET'])
+def blog(username):
+    # verify username belongs to real user
+    user = User.query.filter_by(username=username).first()
+    posts = Post.query.filter_by(author=user.id).all()
+    
+    
+    return render_template('profile.html',posts=posts,user=user)

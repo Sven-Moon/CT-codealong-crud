@@ -20,6 +20,7 @@
   },
   "peacock.color": "#e93333",
   "cSpell.words": [
+    "backref",
     "jsonify"
   ]
 }
